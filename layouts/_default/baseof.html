@@ -32,7 +32,7 @@
     {{ $batch := (js.Batch "sitejs" site.Home.Store) }}
     {{ with $batch.Config }}
       {{ .SetOptions (dict
-        "target" "es2022"
+        "target" "es2023"
         "jsx" "automatic"
 
         )
