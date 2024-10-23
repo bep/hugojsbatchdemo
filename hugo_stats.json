@@ -1,0 +1,37 @@
+{
+  "htmlElements": {
+    "tags": [
+      "a",
+      "article",
+      "body",
+      "div",
+      "h1",
+      "h2",
+      "head",
+      "html",
+      "li",
+      "meta",
+      "script",
+      "title",
+      "ul"
+    ],
+    "classes": [
+      "font-bold",
+      "markdown",
+      "max-w-[90ch]",
+      "mb-4",
+      "md:p-6",
+      "mx-auto",
+      "my-10",
+      "p-2",
+      "rounded-lg",
+      "text-3xl",
+      "text-black",
+      "tracking-tight",
+      "uppercase"
+    ],
+    "ids": [
+      "imagegridtsx-0"
+    ]
+  }
+}

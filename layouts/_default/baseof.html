@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      {{ .Title }}
+    </title>
+    <meta name="description" content="{{ .Description }}" />
+    {{ with (templates.Defer (dict "key" "global")) }}
+      {{ $t := debug.Timer "tailwindcss" }}
+      {{ with resources.Get "css/styles.css" }}
+        {{ $opts := dict
+          "inlineImports" true
+          "optimize" (not hugo.IsDevelopment)
+        }}
+        {{ with . | css.TailwindCSS $opts }}
+          {{ if hugo.IsDevelopment }}
+            <link rel="stylesheet" href="{{ .RelPermalink }}" />
+          {{ else }}
+            {{ with . | minify | fingerprint }}
+              <link
+                rel="stylesheet"
+                href="{{ .RelPermalink }}"
+                integrity="{{ .Data.Integrity }}"
+                crossorigin="anonymous" />
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      {{ $t.Stop }}
+    {{ end }}
+    {{ $batch := (js.Batch "sitejs" site.Home.Store) }}
+    {{ with $batch.Config }}
+      {{ .SetOptions (dict
+        "target" "es2022"
+        "jsx" "automatic"
+
+        )
+      }}
+    {{ end }}
+    {{ block "head-custom" . }}{{ end }}
+  </head>
+  <body class="my-10">
+    {{ block "main" . }}{{ end }}
+  </body>
+</html>

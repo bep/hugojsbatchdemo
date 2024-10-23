@@ -1,0 +1,15 @@
+{{ define "main" }}
+  <article class="mx-auto max-w-[90ch] p-2 md:p-6 rounded-lg">
+    <h1 class="text-3xl mb-4 tracking-tight text-black font-bold uppercase">
+      {{ .Title }}
+    </h1>
+    <div class="markdown">
+      {{ .Content }}
+      <ul>
+        {{ range .Pages }}
+          <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+        {{ end }}
+      </ul>
+    </div>
+  </article>
+{{ end }}

@@ -1,0 +1,40 @@
+{{ $path := .Get "r" }}
+{{ $r := or (.Page.Resources.Get $path) (resources.Get $path) }}
+{{ $batch := (js.Batch "sitejs" site.Home.Store) }}
+{{ $scriptID := $path | anchorize }}
+{{ $instanceID :=  .Ordinal | string }}
+{{ $group := .Page.RelPermalink | anchorize }}
+{{ $params := .Params }}
+{{ $export := .Get "export" | default "default" }}
+{{ $innerType := .Get "innerType" | default "data" }}
+{{ if eq  $innerType "data" }}
+  {{ $innerData := .Inner | transform.Unmarshal | default dict }}
+  {{ $params = $params | merge $innerData }}
+{{ else }}
+
+{{ end }}
+{{ with $batch.Group $group }}
+  {{ with .Runner "create-elements" }}
+    {{ .SetOptions (dict "resource" (resources.Get "js/batch/react-create-elements.js")) }}
+  {{ end }}
+  {{ with .Script $scriptID }}
+    {{ $styles := resources.Match "/js/hugoheadlessui/components/*.*" }}
+    {{ .SetOptions (dict
+      "resource" $r
+      "export" $export
+      "importContext" (slice $.Page ($styles.Mount "/js/hugoheadlessui/components" ".")))
+    }}
+  {{ end }}
+  {{ with .Instance $scriptID $instanceID }}
+    {{ .SetOptions (dict "params" $params) }}
+  {{ end }}
+{{ end }}
+
+{{ $title := default (printf `%s # %s` $scriptID $instanceID | title) }}
+
+
+<h2>{{ $title }}</h2>
+
+<div
+  id="{{ printf `%s-%s` $scriptID $instanceID }}"
+  style="margin-top:20px; margin-bottom: 50px;"></div>

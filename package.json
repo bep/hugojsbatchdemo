@@ -1,0 +1,21 @@
+{
+  "name": "hugojsbatchdemo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@spectrum-icons/ui": "^3.6.10",
+    "@spectrum-icons/workflow": "^4.2.15",
+    "@tailwindcss/cli": "^4.0.0-alpha.28",
+    "@types/node": "^22.7.9",
+    "@types/react": "^18.3.12",
+    "react-aria-components": "^1.4.1",
+    "tailwindcss": "^4.0.0-alpha.28",
+    "tailwindcss-react-aria-components": "^1.1.6"
+  }
+}

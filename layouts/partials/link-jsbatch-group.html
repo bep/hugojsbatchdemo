@@ -1,0 +1,20 @@
+{{ $group := .group }}
+{{ with (templates.Defer (dict "key" $group "data" $group )) }}
+  {{ $batch := (js.Batch "sitejs" site.Home.Store) }}
+  {{ $t := debug.Timer "js.Batch.Build" }}
+  {{ with $batch }}
+    {{ with .Build }}
+      {{ with index .Groups $ }}
+        {{ range . }}
+          {{ $s := . }}
+          {{ if eq $s.MediaType.SubType "css" }}
+            <link href="{{ $s.RelPermalink }}" rel="stylesheet" />
+          {{ else }}
+            <script src="{{ $s.RelPermalink }}" type="module"></script>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ $t.Stop }}
+{{ end }}
