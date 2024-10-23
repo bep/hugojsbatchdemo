@@ -1,0 +1,2 @@
+# hugojsbatchdemo
+Demo/test site.
