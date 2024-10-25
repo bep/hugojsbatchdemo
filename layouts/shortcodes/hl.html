@@ -1,0 +1,6 @@
+{{ $path := .Get "r" }}
+{{ $lang := .Get "l" | default "jsx" }}
+{{ $r := or (.Page.Resources.Get $path) (resources.Get $path) }}
+{{ with $r }}
+  {{ transform.Highlight .Content $lang "" }}
+{{ end }}

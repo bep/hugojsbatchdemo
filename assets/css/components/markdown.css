@@ -1,36 +1,37 @@
 .markdown {
-  @apply text-gray-900 font-serif;
+}
 
+.markdown {
   h1,
   h2,
   h3,
   h4,
   h5 {
-    @apply font-sans tracking-tight;
+    @apply font-semibold tracking-tight;
   }
 
   h1 {
-    @apply text-3xl font-bold;
+    @apply text-2xl;
   }
 
   h2 {
-    @apply text-2xl font-bold;
+    @apply text-xl;
   }
 
   h3 {
-    @apply text-xl font-bold;
+    @apply text-lg;
   }
 
   h4 {
-    @apply text-lg font-bold;
+    @apply text-lg;
   }
 
   h5 {
-    @apply text-base font-bold;
+    @apply text-base;
   }
 
   h6 {
-    @apply text-sm font-bold;
+    @apply text-sm;
   }
 
   p + h2,
@@ -42,32 +43,37 @@
     @apply mt-6;
   }
 
-  h2 + h3 {
+  h2 + h3,
+  h2 + h2 {
     @apply mt-2;
   }
 
   p {
-    @apply text-base mt-2 leading-relaxed;
+    @apply text-base mt-2 leading-normal;
   }
 
   a {
-    @apply text-blue-600 underline;
+    @apply text-purple-400 no-underline;
   }
 
   a:hover {
-    @apply text-blue-800;
+    @apply text-purple-500;
+  }
+
+  p + ul {
+    @apply mt-4;
   }
 
   ul {
-    @apply list-disc pl-4 mt-2;
+    @apply list-disc pl-8 mt-2 mb-8;
   }
 
   ol {
-    @apply list-decimal pl-4 mt-2;
+    @apply list-decimal pl-8 mt-2;
   }
 
   li:not(:last-child) {
-    @apply mb-2;
+    @apply mb-4;
   }
 
   blockquote {
@@ -75,7 +81,7 @@
   }
 
   .highlight {
-    @apply my-2;
+    @apply mt-4 mb-6;
     pre {
       @apply text-sm m-0 p-4;
 
@@ -86,7 +92,7 @@
   }
 
   pre:has(code) {
-    @apply p-2 m-4 bg-gray-100 rounded-lg overflow-x-auto;
+    @apply p-2 m-4 rounded-lg overflow-x-auto;
   }
 
   pre {
@@ -96,6 +102,10 @@
   }
 
   code {
-    @apply bg-gray-200 px-1 rounded-md text-green-800;
+    @apply text-sm text-purple-300 bg-purple-800 p-1 rounded;
   }
+}
+
+hr {
+  @apply border-t border-gray-200 my-8;
 }

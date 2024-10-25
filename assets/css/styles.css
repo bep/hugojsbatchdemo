@@ -1,19 +1,15 @@
 @import "tailwindcss";
-@plugin "tailwindcss-react-aria-components";
 
 @theme {
-  --color-orange-300: #f56642;
-  --color-blue-100: #427bf5;
-  --color-gray-50: #f8fafc;
-  --color-gray-100: #f1f5f9;
-  --color-gray-200: #e2e8f0;
-  --color-green-800: #3f6212;
-  --color-green-900: #365314;
-  --color-green-950: #1a2e05;
+  --color-primary: var(--color-purple-500);
+}
+
+html {
+  font-size: 20px;
 }
 
 body {
-  @apply antialiased;
+  @apply antialiased bg-linear-90 from-purple-950 via-blue-950 to-purple-900 text-gray-200;
 }
 
 @import "components/markdown.css";

@@ -13,6 +13,7 @@
           "inlineImports" true
           "optimize" (not hugo.IsDevelopment)
         }}
+        {{ $t := debug.Timer "css.TailwindCSS" }}
         {{ with . | css.TailwindCSS $opts }}
           {{ if hugo.IsDevelopment }}
             <link rel="stylesheet" href="{{ .RelPermalink }}" />
@@ -26,21 +27,24 @@
             {{ end }}
           {{ end }}
         {{ end }}
+        {{ $t.Stop }}
       {{ end }}
       {{ $t.Stop }}
     {{ end }}
-    {{ $batch := (js.Batch "sitejs" site.Home.Store) }}
+    {{ $batch := (js.Batch "globaljs") }}
     {{ with $batch.Config }}
       {{ .SetOptions (dict
         "target" "es2023"
         "jsx" "automatic"
-
         )
       }}
     {{ end }}
     {{ block "head-custom" . }}{{ end }}
   </head>
-  <body class="my-10">
-    {{ block "main" . }}{{ end }}
+  <body>
+    {{ partial "navbar.html" . }}
+    <main class="mb-6">
+      {{ block "main" . }}{{ end }}
+    </main>
   </body>
 </html>

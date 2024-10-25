@@ -1,15 +1,19 @@
 {{ define "main" }}
-  <article class="mx-auto max-w-[90ch] p-2 md:p-6 rounded-lg">
-    <h1 class="text-3xl mb-4 tracking-tight text-black font-bold uppercase">
-      {{ .Title }}
-    </h1>
-    <div class="markdown">
+  <article class="mx-auto max-w-[80ch] p-2 md:p-6 bg-purple-900/25">
+    <div class="markdown mb-12">
       {{ .Content }}
-      <ul>
-        {{ range .Pages }}
-          <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-        {{ end }}
-      </ul>
     </div>
+    <ul role="list" class="space-y-3">
+      {{ range .Pages }}
+        <li
+          class="bg-linear-45 from-purple-900 via-blue-900 to-purple-800 px-4 py-4 shadow sm:rounded-md sm:px-6 group">
+          <a
+            class="w-full h-full block text-base text-gray-100 group-hover:text-purple-300"
+            href="{{ .RelPermalink }}"
+            >{{ .LinkTitle }}</a
+          >
+        </li>
+      {{ end }}
+    </ul>
   </article>
 {{ end }}

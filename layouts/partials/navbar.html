@@ -1,0 +1,24 @@
+<nav class="bg-linear-45 from-purple-900 via-blue-900 to-purple-800 w-full">
+  <div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-center">
+      <div class="flex items-center overflow-x-auto">
+        <div class="sm:ml-6">
+          <div class="flex space-x-4 whitespace-nowrap">
+            {{ template "nav-link" site.Home }}
+            {{ range site.RegularPages }}
+              {{ template "nav-link" . }}
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{{ define "nav-link" }}
+  <a
+    href="{{ .RelPermalink }}"
+    class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+    >{{ .LinkTitle }}</a
+  >
+{{ end }}

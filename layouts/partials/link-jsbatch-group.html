@@ -1,8 +1,6 @@
 {{ $group := .group }}
 {{ with (templates.Defer (dict "key" $group "data" $group )) }}
-  {{ $batch := (js.Batch "sitejs" site.Home.Store) }}
-  {{ $t := debug.Timer "js.Batch.Build" }}
-  {{ with $batch }}
+  {{ with (js.Batch "globaljs") }}
     {{ with .Build }}
       {{ with index .Groups $ }}
         {{ range . }}
@@ -16,5 +14,4 @@
       {{ end }}
     {{ end }}
   {{ end }}
-  {{ $t.Stop }}
 {{ end }}

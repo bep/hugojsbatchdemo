@@ -1,40 +1,32 @@
 {{ $path := .Get "r" }}
+{{ $class := .Get "c" | default "" }}
 {{ $r := or (.Page.Resources.Get $path) (resources.Get $path) }}
-{{ $batch := (js.Batch "sitejs" site.Home.Store) }}
+{{ $batch := (js.Batch "globaljs") }}
 {{ $scriptID := $path | anchorize }}
 {{ $instanceID :=  .Ordinal | string }}
 {{ $group := .Page.RelPermalink | anchorize }}
-{{ $params := .Params }}
+{{ $props := .Params | default dict }}
 {{ $export := .Get "export" | default "default" }}
-{{ $innerType := .Get "innerType" | default "data" }}
-{{ if eq  $innerType "data" }}
-  {{ $innerData := .Inner | transform.Unmarshal | default dict }}
-  {{ $params = $params | merge $innerData }}
-{{ else }}
-
+{{ $innerData := .Inner | transform.Unmarshal | default dict }}
+{{ with  $innerData }}
+  {{ $props = $props | merge .props }}
 {{ end }}
 {{ with $batch.Group $group }}
   {{ with .Runner "create-elements" }}
     {{ .SetOptions (dict "resource" (resources.Get "js/batch/react-create-elements.js")) }}
   {{ end }}
   {{ with .Script $scriptID }}
-    {{ $styles := resources.Match "/js/hugoheadlessui/components/*.*" }}
+    {{ $common := resources.Match "/js/headlessui/*.*" }}
     {{ .SetOptions (dict
       "resource" $r
       "export" $export
-      "importContext" (slice $.Page ($styles.Mount "/js/hugoheadlessui/components" ".")))
+      "importContext" (slice $.Page ($common.Mount "/js/headlessui" ".")))
     }}
   {{ end }}
   {{ with .Instance $scriptID $instanceID }}
-    {{ .SetOptions (dict "params" $params) }}
+    {{ .SetOptions (dict "params" $props) }}
   {{ end }}
 {{ end }}
-
-{{ $title := default (printf `%s # %s` $scriptID $instanceID | title) }}
-
-
-<h2>{{ $title }}</h2>
-
 <div
   id="{{ printf `%s-%s` $scriptID $instanceID }}"
-  style="margin-top:20px; margin-bottom: 50px;"></div>
+  class="mt-6 mb-8 p-3 overflow-auto rounded-lg bg-linear-45 from-purple-900 via-blue-900 to-purple-800 {{ $class }} mystyles"></div>
