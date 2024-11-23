@@ -1,7 +1,8 @@
 import * as ReactDOM from 'react-dom/client';
 import * as React from 'react';
 
-export default function Run(scripts) {
+export default function Run(group) {
+	const scripts = group.scripts;
 	for (const script of scripts) {
 		for (const instance of script.instances) {
 			/* This is a convention in this project. */

@@ -3,7 +3,7 @@ title: Recharts
 weight: 5
 ---
 
-## Pie Chart With Customized Label
+## Pie Chart With Customized Label!
 
 Data passed in as YAML in shortcode inner content.
 

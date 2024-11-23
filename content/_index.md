@@ -39,6 +39,8 @@ As a consequence of this concurrent building, the build and inlude of any output
 [group]: #group
 [script]: #script
 [instance]: #instance
+[script options]: #script-options
+[params options]: #params-options
 [with]: https://gohugo.io/functions/go-template/with/
 [map]: https://gohugo.io/functions/collections/dictionary/
 [OptionsSetter]: #optionssetter
@@ -54,7 +56,7 @@ As a consequence of this concurrent building, the build and inlude of any output
 
 ## Config
 
-Returns a [OptionsSetter] that can be used to set options for the batch.
+Returns a [OptionsSetter] that can be used to set [params options] for the batch.
 
 See [js.Build options], but note that:
 
@@ -66,50 +68,19 @@ See [js.Build options], but note that:
 
 ### Script
 
-Returns a [OptionsSetter] that can be used to set options for this script.
-
-#### importContext
+Returns a [OptionsSetter] that can be used to set [script options] for this script.
 
 ### Instance
 
-Returns a [OptionsSetter] that can be used to set options for this instance.
+Returns a [OptionsSetter] that can be used to set [params options] for this instance.
 
 ### Runner
 
-Returns a [OptionsSetter] that can be used to set options for this runner.
+Returns a [OptionsSetter] that can be used to set [script options] for this runner.
 
-```js
-import * as ReactDOM from 'react-dom/client';
-import * as React from 'react';
+{{< hl r="js/batch/react-create-elements.js" >}}
 
-export default function Run(scripts) {
-	for (const script of scripts) {
-		for (const instance of script.instances) {
-			/* This is a convention in this project. */
-			let elId = `${script.id}-${instance.id}`;
-			let el = document.getElementById(elId);
-			if (!el) {
-				console.warn(`Element with id ${elId} not found`);
-				continue;
-			}
-			const root = ReactDOM.createRoot(el);
-			console.log('create', elId, 'with', instance.params);
-			const reactEl = React.createElement(script.binding, instance.params);
-			root.render(reactEl);
-		}
-	}
-}
-```
 
-## OptionsSetter
-
-An `OptionsSetter` is a special object that is returned once only. This means that you should wrap it with [with]:
-
-```go-html-template
-{{ with .Script "myscript" }}
-    {{ .SetOptions (dict "resource" (resources.Get "myscript.js"))}}
-{{ end }}
-```
 
 `SetOptions` takes a [map] of options.
 
@@ -129,6 +100,42 @@ import { ButtonBasic } from "/js/headlessui/button.jsx";
 ```
 
 It's not in the example, but I guess this could be more visibly useful in situations where you need to override certain files (e.g. CSS) in the component folder.
+
+
+## OptionsSetter
+
+An `OptionsSetter` is a special object that is returned once only. This means that you should wrap it with [with]:
+
+```go-html-template
+{{ with .Script "myscript" }}
+    {{ .SetOptions (dict "resource" (resources.Get "myscript.js"))}}
+{{ end }}
+```
+
+## Script Options
+
+resource
+: The resource to build. This can be a file resource or a virtual resource.
+
+export
+: The export to bind the runner to. Set it to `*` to export the [entire namespace](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#namespace_import). Default is `default` for [runner] scripts and `*` for other [scripts](#script).
+
+importContext
+: An additional context for resolving imports. Hugo will always check this one first before falling back to `assets` and `node_modules`. A common use of this is to resolve imports inside a page bundle.
+
+params
+: A map of parameters that will be passed to the script as JSON. These gets bound to the `@params` namespace:
+```js
+import * as params from '@params';
+```
+
+## Import Context
+
+## Params Options
+
+params
+: A map of parameters that will be passed to the script as JSON. 
+
 
 
 

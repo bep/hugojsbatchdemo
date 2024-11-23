@@ -109,3 +109,13 @@
 hr {
   @apply border-t border-gray-200 my-8;
 }
+
+dl {
+  dt {
+    @apply font-semibold italic mt-4;
+  }
+
+  dd {
+    @apply mt-1 ml-2;
+  }
+}
