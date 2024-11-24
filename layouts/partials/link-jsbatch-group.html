@@ -1,6 +1,6 @@
 {{ $group := .group }}
 {{ with (templates.Defer (dict "key" $group "data" $group )) }}
-  {{ with (js.Batch "globaljs") }}
+  {{ with (js.Batch "js/mybatch") }}
     {{ with .Build }}
       {{ with index .Groups $ }}
         {{ range . }}

@@ -1,0 +1,23 @@
+{{ $title := .Get "title" }}
+{{ $open := .Get "open" }}
+{{ $openClass := "" }}
+{{ if $open }}{{ $openClass = "open" }}{{ end }}
+<details
+  class="w-full text-sm group border border-gray-100 hover:shadow-sm ease-out duration-300 p-3 my-6
+                [&::details-content]:block
+                [&::details-content]:overflow-hidden
+                [&::details-content]:[block-size:0]
+                [&::details-content]:transition-all
+                [&::details-content]:transition-discrete
+                [&::details-content]:ease-out
+                [&::details-content]:duration-500
+                open:[&::details-content]:[block-size:auto]
+                open:[&::details-content]:[block-size:calc-size(auto,size)]">
+  <summary class="flex  items-center justify-between list-none cursor-pointer">
+    <span>🔖<span class="ml-2 font-medium">{{ $title }}</span></span>
+    <span class="group-open:rotate-180 ease duration-300 opacity-60">↓</span>
+  </summary>
+  <div class="pt-3 opacity-60">
+    {{ .Inner | $.Page.RenderString }}
+  </div>
+</details>

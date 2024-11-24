@@ -1,7 +1,10 @@
 {{ $path := .Get "r" }}
 {{ $class := .Get "c" | default "" }}
 {{ $r := or (.Page.Resources.Get $path) (resources.Get $path) }}
-{{ $batch := (js.Batch "globaljs") }}
+{{ if not $r }}
+  {{ errorf "resource not found: %s" $path }}
+{{ end }}
+{{ $batch := (js.Batch "js/mybatch") }}
 {{ $scriptID := $path | anchorize }}
 {{ $instanceID :=  .Ordinal | string }}
 {{ $group := .Page.RelPermalink | anchorize }}
@@ -17,10 +20,11 @@
   {{ end }}
   {{ with .Script $scriptID }}
     {{ $common := resources.Match "/js/headlessui/*.*" }}
+    {{ $importContext := (slice $.Page ($common.Mount "/js/headlessui" ".")) }}
     {{ .SetOptions (dict
       "resource" $r
       "export" $export
-      "importContext" (slice $.Page ($common.Mount "/js/headlessui" ".")))
+      "importContext" $importContext )
     }}
   {{ end }}
   {{ with .Instance $scriptID $instanceID }}

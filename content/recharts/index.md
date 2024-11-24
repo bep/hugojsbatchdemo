@@ -3,9 +3,10 @@ title: Recharts
 weight: 5
 ---
 
-## Pie Chart With Customized Label!
 
-Data passed in as YAML in shortcode inner content.
+## Pie Chart With Customized Label
+
+Data passed in as YAML in shortcode inner content
 
 {{< hdx r="pie.jsx" c="h-80" >}}
 props:
@@ -20,12 +21,13 @@ props:
       value: 200
 {{< /hdx >}}
 
-## Composed Chart With Axis Labels
-
-{{< hdx r="composed.jsx" c="h-80" />}}
-
-## Mix Bar Chart
+## Mix Bar Chartss
 
 {{< hdx r="mixbar.jsx" c="h-80" />}}
+
+
+## Composed Chart With Axis Label
+
+{{< hdx r="composed.jsx" c="h-80" />}}
 
 

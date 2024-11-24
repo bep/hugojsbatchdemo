@@ -31,11 +31,14 @@
       {{ end }}
       {{ $t.Stop }}
     {{ end }}
-    {{ $batch := (js.Batch "globaljs") }}
-    {{ with $batch.Config }}
+    {{ with (js.Batch "js/mybatch").Config }}
       {{ .SetOptions (dict
+        "format" "esm"
         "target" "es2023"
         "jsx" "automatic"
+        "loaders" (dict ".png" "dataurl")
+        "minify" true
+        "sourceMap" (cond hugo.IsDevelopment "linked" "")
         )
       }}
     {{ end }}

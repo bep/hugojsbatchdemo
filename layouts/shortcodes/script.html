@@ -1,0 +1,19 @@
+{{ $path := .Get "resource" }}
+{{ $id := .Get "id" | default ($path | anchorize) }}
+{{ $group := .Get "group" | default (.Page.RelPermalink | anchorize) }}
+{{ $batchID := .Get "batch" | default "js/mybatch" }}
+{{ $r := or (.Page.Resources.Get $path) (resources.Get $path) }}
+{{ $batch := (js.Batch "js/mybatch") }}
+{{ if not (or $batch $r $id $group ) }}
+  {{ errorf "script shortcode: missing or incorrect required parameter(s) resource, path, batch, id, or group" }}
+{{ end }}
+{{ $importContext := $.Page }}
+{{ with $batch.Group $group }}
+  {{ with .Script $id }}
+    {{ .SetOptions (dict
+      "resource" $r
+      "export" ""
+      "importContext" $importContext)
+    }}
+  {{ end }}
+{{ end }}

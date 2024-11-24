@@ -1,0 +1,1 @@
+window.lib = 'lib1';

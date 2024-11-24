@@ -97,7 +97,7 @@
 
   pre {
     code {
-      @apply bg-inherit text-sm font-mono;
+      @apply bg-inherit text-xs font-mono;
     }
   }
 

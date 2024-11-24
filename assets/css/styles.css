@@ -12,4 +12,8 @@ body {
   @apply antialiased bg-linear-90 from-purple-950 via-blue-950 to-purple-900 text-gray-200;
 }
 
+.goat {
+  @apply text-xs max-w-64 font-mono my-4;
+}
+
 @import "components/markdown.css";
