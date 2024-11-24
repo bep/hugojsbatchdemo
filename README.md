@@ -1,2 +1,5 @@
-# hugojsbatchdemo
-Demo/test site.
+
+```
+npm install
+hugo server
+```

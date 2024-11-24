@@ -3,7 +3,7 @@ title: Hugo js.Batch Demo
 linktitle: Home
 ---
 
-For most JavaScript building, [js.Build](https://gohugo.io/hugo-pipes/js/) is the right choice. The new `js.Batch` function added in Hugo `v0.140.0` can be used for more  advanced use cases. This function allows coordiniated creation of a JavaScript bundle from multiple sources (e.g. shortcodes, render hooks, page templates etc.).
+For most JavaScript building, [js.Build](https://gohugo.io/hugo-pipes/js/) is the right choice. The new `js.Batch` function added in Hugo `v0.140.0` can be used for more  advanced use cases. This function allows coordinated creation of a JavaScript bundle from multiple sources (e.g. shortcodes, render hooks, page templates etc.).
 
 Some key features:
 
@@ -13,27 +13,27 @@ Some key features:
 * You can control how imports gets resolved in [importContext](#importContext). This allows you to build scripts inside [page bundles] with relative imports resolved in the bundle. Combine it with [mount](#mount) for even more control.
 * This enables [code splitting] with sharing of common code and dependencies (e.g. React)
 
-As a consequence of this concurrent building, the build and inlude of any output will need to be done in a `templates.Defer` block:
+As a consequence of this concurrent building, the building and inclusion of any output will need to be done in a `templates.Defer` block:
 
 ```go-html-template
 {{ $group := .group }}
 {{ with (templates.Defer (dict "key" $group "data" $group )) }}
-  {{ with (js.Batch "globaljs") }}
-  {{ with .Build }}
-    {{ with index .Groups $ }}
-      {{ range . }}
-        {{ $s := . }}
-        {{ if eq $s.MediaType.SubType "css" }}
-          <link href="{{ $s.RelPermalink }}" rel="stylesheet" />
-        {{ else }}
-          <script src="{{ $s.RelPermalink }}" type="module"></script>
+  {{ with (js.Batch "mybatch") }}
+    {{ with .Build }}
+      {{ with index .Groups $ }}
+        {{ range . }}
+          {{ $s := . }}
+          {{ if eq $s.MediaType.SubType "css" }}
+            <link href="{{ $s.RelPermalink }}" rel="stylesheet" />
+          {{ else }}
+            <script src="{{ $s.RelPermalink }}" type="module"></script>
+          {{ end }}
         {{ end }}
       {{ end }}
-    {{ end }}
   {{ end }}
 {{ end }}
-
 ```
+
 
 [config]: #config
 [group]: #group
@@ -51,7 +51,6 @@ As a consequence of this concurrent building, the build and inlude of any output
 [js.Build options]: https://gohugo.io/hugo-pipes/js/#options
 
 
-
 ## Build
 
 ## Config
@@ -63,23 +62,77 @@ See [js.Build options], but note that:
 * `targetPath` is set automatically (there may be multiple outputs).
 * `format` must be `esm`, currently the only format supporting [code splitting].
 
+```go-html-template
+{{ with js.Batch "mybatch" }}
+  {{ with .Config }}
+       {{ .SetOptions (dict
+        "target" "es2023"
+        "jsx" "automatic"
+        "loaders" (dict ".png" "dataurl")
+        "minify" true
+        )
+      }}
+  {{ end }}
+{{ end }}
+```
 
 ## Group
 
+Args: `ID`
+
+**Most of the building blocks can be seen in hdx shortcode in this project:**
+
+{{< hl r="layouts/shortcodes/hdx.html" l="go-html-template" >}}
+
 ### Script
+
+Args: `ID`
 
 Returns a [OptionsSetter] that can be used to set [script options] for this script.
 
+```go-html-template
+{{ with js.Batch "mybatch" }}
+  {{ with .Group "mygroup" }}
+      {{ with .Script "myscript" }}
+          {{ .SetOptions (dict "resource" (resources.Get "myscript.js")) }}
+      {{ end }}
+  {{ end }}
+{{ end }}
+```
+
 ### Instance
 
+Args: `SCRIPT_ID`, `INSTANCE_ID`
+
 Returns a [OptionsSetter] that can be used to set [params options] for this instance.
+
+```go-html-template
+{{ with js.Batch "mybatch" }}
+  {{ with .Group "mygroup" }}
+      {{ with .Instance "myscript" "myinstance" }}
+          {{ .SetOptions (dict "params" (dict "param1" "value1")) }}
+      {{ end }}
+  {{ end }}
+{{ end }}
+```
 
 ### Runner
 
 Returns a [OptionsSetter] that can be used to set [script options] for this runner.
 
-{{< hl r="js/batch/react-create-elements.js" >}}
+```go-html-template
+{{ with js.Batch "mybatch" }}
+  {{ with .Group "mygroup" }}
+      {{ with .Runner "myrunner" }}
+          {{ .SetOptions (dict "resource" (resources.Get "myrunner.js")) }}
+      {{ end }}
+  {{ end }}
+{{ end }}
+```
 
+**The runner script used in this project:**
+
+{{< hl r="js/batch/react-create-elements.js" >}}
 
 
 `SetOptions` takes a [map] of options.
@@ -135,8 +188,6 @@ import * as params from '@params';
 
 params
 : A map of parameters that will be passed to the script as JSON. 
-
-
 
 
 ----

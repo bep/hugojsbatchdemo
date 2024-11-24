@@ -23,10 +23,6 @@ props:
 {{< /hdx >}}
 
 
-## Dropdown Menus
-
-{{< hdx r="dropdownmenu.jsx" c="h-64 w-64" />}}
-
 
 ## Text Area
 
@@ -50,3 +46,6 @@ props:
 {{< /hdx >}}
 
 
+## Dropdown Menus
+
+{{< hdx r="dropdownmenu.jsx" c="h-64 w-64" />}}
