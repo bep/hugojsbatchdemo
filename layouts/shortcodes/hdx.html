@@ -1,7 +1,7 @@
 {{ $path := .Get "r" }}
 {{ $class := .Get "c" | default "" }}
 {{ $r := or (.Page.Resources.Get $path) (resources.Get $path) }}
-{{ $batch := (js.Batch "globaljs") }}
+{{ $batch := (js.Batch "js/mybatch") }}
 {{ $scriptID := $path | anchorize }}
 {{ $instanceID :=  .Ordinal | string }}
 {{ $group := .Page.RelPermalink | anchorize }}
