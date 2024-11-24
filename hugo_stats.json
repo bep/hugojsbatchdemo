@@ -12,7 +12,6 @@
       "h1",
       "h2",
       "h3",
-      "h4",
       "head",
       "hr",
       "html",
@@ -30,7 +29,7 @@
     "classes": [
       "bg-gray-900",
       "bg-linear-45",
-      "bg-purple-900/25",
+      "bg-pink-900/25",
       "block",
       "flex",
       "font-bold",

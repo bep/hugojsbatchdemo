@@ -11,14 +11,16 @@
   "dependencies": {
     "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^2.1.5",
+    "leaflet": "^1.9.4",
+    "react-leaflet": "^4.2.1",
     "recharts": "^2.13.3"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.0.0-beta.1",
+    "@tailwindcss/cli": "^4.0.0-beta.3",
     "@types/node": "^22.7.9",
     "@types/react": "^18.3.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwindcss": "^4.0.0-beta.1"
+    "tailwindcss": "^4.0.0-beta.3"
   }
 }
