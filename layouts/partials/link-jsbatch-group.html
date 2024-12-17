@@ -6,9 +6,29 @@
         {{ range . }}
           {{ $s := . }}
           {{ if eq $s.MediaType.SubType "css" }}
-            <link href="{{ $s.RelPermalink }}" rel="stylesheet" />
+            {{ if hugo.IsDevelopment }}
+              <link rel="stylesheet" href="{{ .RelPermalink }}" />
+            {{ else }}
+              {{ with . | fingerprint }}
+                <link
+                  rel="stylesheet"
+                  href="{{ .RelPermalink }}"
+                  integrity="{{ .Data.Integrity }}"
+                  crossorigin="anonymous" />
+              {{ end }}
+            {{ end }}
           {{ else }}
-            <script src="{{ $s.RelPermalink }}" type="module"></script>
+            {{ if hugo.IsDevelopment }}
+              <script src="{{ $s.RelPermalink }}" type="module"></script>
+            {{ else }}
+              {{ with . | fingerprint }}
+                <script
+                  src="{{ $s.RelPermalink }}"
+                  type="module"
+                  integrity="{{ .Data.Integrity }}"
+                  crossorigin="anonymous"></script>
+              {{ end }}
+            {{ end }}
           {{ end }}
         {{ end }}
       {{ end }}
