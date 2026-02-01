@@ -23,7 +23,7 @@
             {{ else }}
               {{ with . | fingerprint }}
                 <script
-                  src="{{ $s.RelPermalink }}"
+                  src="{{ .RelPermalink }}"
                   type="module"
                   integrity="{{ .Data.Integrity }}"
                   crossorigin="anonymous"></script>
