@@ -18,7 +18,7 @@ disableKinds = ['taxonomy', 'term', "sitemap"]
 
 [module]
     [module.hugoVersion]
-        min = "0.128.0"
+        min = "0.157.0"
     [[module.mounts]]
         source = "assets"
         target = "assets"
