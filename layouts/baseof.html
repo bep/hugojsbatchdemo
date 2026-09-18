@@ -1,53 +1,53 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>
-      {{ .Title }}
-    </title>
-    <meta name="description" content="{{ .Description }}" />
-    {{ with (templates.Defer (dict "key" "global")) }}
-      {{ $t := debug.Timer "tailwindcss" }}
-      {{ with resources.Get "css/styles.css" }}
-        {{ $opts := dict
-          "inlineImports" true
-          "optimize" (not hugo.IsDevelopment)
-        }}
-        {{ $t := debug.Timer "css.TailwindCSS" }}
-        {{ with . | css.TailwindCSS $opts }}
-          {{ if hugo.IsDevelopment }}
-            <link rel="stylesheet" href="{{ .RelPermalink }}" />
-          {{ else }}
-            {{ with . | minify | fingerprint }}
-              <link
-                rel="stylesheet"
-                href="{{ .RelPermalink }}"
-                integrity="{{ .Data.Integrity }}"
-                crossorigin="anonymous" />
-            {{ end }}
-          {{ end }}
-        {{ end }}
-        {{ $t.Stop }}
-      {{ end }}
-      {{ $t.Stop }}
-    {{ end }}
-    {{ with (js.Batch "js/mybatch").Config }}
-      {{ .SetOptions (dict
-        "format" "esm"
-        "target" "es2023"
-        "jsx" "automatic"
-        "loaders" (dict ".png" "dataurl")
-        "minify" true
-        "sourceMap" (cond hugo.IsDevelopment "linked" "")
-        )
-      }}
-    {{ end }}
-    {{ block "head-custom" . }}{{ end }}
-  </head>
-  <body>
-    {{ partial "navbar.html" . }}
-    <main class="mb-6">
-      {{ block "main" . }}{{ end }}
-    </main>
-  </body>
+	<head>
+		<meta charset="utf-8" />
+		<title>
+			{{ .Title }}
+		</title>
+		<meta name="description" content="{{ .Description }}" />
+		{{ with (templates.Defer (dict "key" "global")) }}
+			{{ $t := debug.Timer "tailwindcss" }}
+			{{ with resources.Get "css/styles.css" }}
+				{{ $opts := dict
+					"inlineImports" true
+					"optimize" (not hugo.IsDevelopment)
+				}}
+				{{ $t := debug.Timer "css.TailwindCSS" }}
+				{{ with . | css.TailwindCSS $opts }}
+					{{ if hugo.IsDevelopment }}
+						<link rel="stylesheet" href="{{ .RelPermalink }}" />
+					{{ else }}
+						{{ with . | minify | fingerprint }}
+							<link
+								rel="stylesheet"
+								href="{{ .RelPermalink }}"
+								integrity="{{ .Data.Integrity }}"
+								crossorigin="anonymous" />
+						{{ end }}
+					{{ end }}
+				{{ end }}
+				{{ $t.Stop }}
+			{{ end }}
+			{{ $t.Stop }}
+		{{ end }}
+		{{ with (js.Batch "js/mybatch").Config }}
+			{{ .SetOptions (dict
+				"format" "esm"
+				"target" "es2023"
+				"jsx" "automatic"
+				"loaders" (dict ".png" "dataurl")
+				"minify" true
+				"sourceMap" (cond hugo.IsDevelopment "linked" "")
+			)
+			}}
+		{{ end }}
+		{{ block "head-custom" . }}{{ end }}
+	</head>
+	<body>
+		{{ partial "navbar.html" . }}
+		<main class="mb-6">
+			{{ block "main" . }}{{ end }}
+		</main>
+	</body>
 </html>

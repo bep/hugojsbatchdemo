@@ -2,35 +2,36 @@
 {{ $class := .Get "c" | default "" }}
 {{ $r := or (.Page.Resources.Get $path) (resources.Get $path) }}
 {{ if not $r }}
-  {{ errorf "resource not found: %s" $path }}
+	{{ errorf "resource not found: %s" $path }}
 {{ end }}
 {{ $batch := (js.Batch "js/mybatch") }}
 {{ $scriptID := $path | anchorize }}
-{{ $instanceID :=  .Ordinal | string }}
+{{ $instanceID := .Ordinal | string }}
 {{ $group := .Page.RelPermalink | anchorize }}
 {{ $props := .Params | default dict }}
 {{ $export := .Get "export" | default "default" }}
 {{ $innerData := .Inner | transform.Unmarshal | default dict }}
-{{ with  $innerData }}
-  {{ $props = $props | merge .props }}
+{{ with $innerData }}
+	{{ $props = $props | merge .props }}
 {{ end }}
 {{ with $batch.Group $group }}
-  {{ with .Runner "create-elements" }}
-    {{ .SetOptions (dict "resource" (resources.Get "js/batch/react-create-elements.js")) }}
-  {{ end }}
-  {{ with .Script $scriptID }}
-    {{ $common := resources.Match "/js/headlessui/*.*" }}
-    {{ $importContext := (slice $.Page ($common.Mount "/js/headlessui" ".")) }}
-    {{ .SetOptions (dict
-      "resource" $r
-      "export" $export
-      "importContext" $importContext )
-    }}
-  {{ end }}
-  {{ with .Instance $scriptID $instanceID }}
-    {{ .SetOptions (dict "params" $props) }}
-  {{ end }}
+	{{ with .Runner "create-elements" }}
+		{{ .SetOptions (dict "resource" (resources.Get "js/batch/react-create-elements.js")) }}
+	{{ end }}
+	{{ with .Script $scriptID }}
+		{{ $common := resources.Match "/js/headlessui/*.*" }}
+		{{ $importContext := (slice $.Page ($common.Mount "/js/headlessui" ".")) }}
+		{{ .SetOptions (dict
+			"resource" $r
+			"export" $export
+			"importContext" $importContext
+		)
+		}}
+	{{ end }}
+	{{ with .Instance $scriptID $instanceID }}
+		{{ .SetOptions (dict "params" $props) }}
+	{{ end }}
 {{ end }}
 <div
-  id="{{ printf `%s-%s` $scriptID $instanceID }}"
-  class="mt-6 mb-8 p-3 overflow-auto rounded-lg bg-linear-45 from-purple-900 via-blue-900 to-purple-800 {{ $class }} mystyles"></div>
+	id="{{ printf `%s-%s` $scriptID $instanceID }}"
+	class="mt-6 mb-8 p-3 overflow-auto rounded-lg bg-linear-45 from-purple-900 via-blue-900 to-purple-800 {{ $class }} mystyles"></div>

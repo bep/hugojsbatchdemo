@@ -1,37 +1,37 @@
 {{ $group := .group }}
-{{ with (templates.Defer (dict "key" $group "data" $group )) }}
-  {{ with (js.Batch "js/mybatch") }}
-    {{ with .Build }}
-      {{ with index .Groups $ }}
-        {{ range . }}
-          {{ $s := . }}
-          {{ if eq $s.MediaType.SubType "css" }}
-            {{ if hugo.IsDevelopment }}
-              <link rel="stylesheet" href="{{ .RelPermalink }}" />
-            {{ else }}
-              {{ with . | fingerprint }}
-                <link
-                  rel="stylesheet"
-                  href="{{ .RelPermalink }}"
-                  integrity="{{ .Data.Integrity }}"
-                  crossorigin="anonymous" />
-              {{ end }}
-            {{ end }}
-          {{ else }}
-            {{ if hugo.IsDevelopment }}
+{{ with (templates.Defer (dict "key" $group "data" $group)) }}
+	{{ with (js.Batch "js/mybatch") }}
+		{{ with .Build }}
+			{{ with index .Groups $ }}
+				{{ range . }}
+					{{ $s := . }}
+					{{ if eq $s.MediaType.SubType "css" }}
+						{{ if hugo.IsDevelopment }}
+							<link rel="stylesheet" href="{{ .RelPermalink }}" />
+						{{ else }}
+							{{ with . | fingerprint }}
+								<link
+									rel="stylesheet"
+									href="{{ .RelPermalink }}"
+									integrity="{{ .Data.Integrity }}"
+									crossorigin="anonymous" />
+							{{ end }}
+						{{ end }}
+					{{ else }}
+						{{ if hugo.IsDevelopment }}
               <script src="{{ $s.RelPermalink }}" type="module"></script>
-            {{ else }}
-              {{ with . | fingerprint }}
+						{{ else }}
+							{{ with . | fingerprint }}
                 <script
-                  src="{{ .RelPermalink }}"
-                  type="module"
-                  integrity="{{ .Data.Integrity }}"
-                  crossorigin="anonymous"></script>
-              {{ end }}
-            {{ end }}
-          {{ end }}
-        {{ end }}
-      {{ end }}
-    {{ end }}
-  {{ end }}
+									src="{{ .RelPermalink }}"
+									type="module"
+									integrity="{{ .Data.Integrity }}"
+									crossorigin="anonymous"></script>
+							{{ end }}
+						{{ end }}
+					{{ end }}
+				{{ end }}
+			{{ end }}
+		{{ end }}
+	{{ end }}
 {{ end }}
